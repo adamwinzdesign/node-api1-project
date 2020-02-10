@@ -14,7 +14,7 @@ server.get('/', function(req, res) {
 });
 
 // GET list of users
-server.get('api/users', (req, res) => {
+server.get('/api/users', (req, res) => {
   Users.find()
     .then(users => {
       res.status(200).json(users);
@@ -36,8 +36,8 @@ server.get('/api/users/:id', (req, res) => {
       console.log(`findByID ${id} worked!`)
     })
     .catch(error => {
-      console.log(error);
-      res.status(500).json({ errorMessage: 'The user with the specified ID does not exist.' })
+      // console.log(error);
+      res.status(500).json({ message: 'The user with the specified ID does not exist.' })
     })
 })
 
@@ -73,16 +73,17 @@ server.delete('/api/users/:id', (req, res) => {
 })
 
 // update user with PUT
+// still need to figure out how to respond with the complete updated object
 server.put('/api/users/:id', (req, res) => {
   const id = req.params.id;
   const user = req.body;
 
   Users.update(id, user)
     .then(updated => {
-      res.status(204).json(updated);
+      res.status(200).json(updated);
     })
     .catch(error => {
-      console.log(error);
+      // console.log(error);
       res.status(500).json({ errorMessage: 'Error updating the user' })
     })
 });
