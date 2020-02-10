@@ -21,7 +21,7 @@ server.get('/api/users', (req, res) => {
       console.log('res in hubs GET request: ', res)
     })
     .catch(error => {
-      console.log(error);
+      // console.log(error);
       res.status(500).json({ errorMessage: 'error getting list of users in index.js, server.get, Users.find' })
     })
 })
@@ -44,18 +44,20 @@ server.get('/api/users/:id', (req, res) => {
 // create a new User with POST
 server.post('/api/users', (req, res) => {
   const userData = req.body;
-  // validation will go here once we learn how
+  console.log(`post request body.name: ${req.body.name}`)
 
-  // still need to add logic if req.body is missing name or bio!
-
-  Users.insert(userData)
+  if(req.body.name === null || req.body.bio === null || req.body.name === '' || req.body.bio === '') {
+    res.status(400).json({ errorMessage: 'Please provide a name and bio!' })
+  } else {
+    Users.insert(userData)
     .then(user => {
       res.status(201).json(user)
     })
     .catch(error => {
-      console.log(error);
+      // console.log(error);
       res.status(500).json({ errorMessage: 'There was an error while saving the user to the database' })
     })
+  }
 })
 
 // delete a user
@@ -67,7 +69,7 @@ server.delete('/api/users/:id', (req, res) => {
       res.status(200).json(removed)
     })
     .catch(error => {
-      console.log(error);
+      // console.log(error);
       res.status(500).json({ errorMessage: 'Error removing user' })
     })
 })
