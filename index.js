@@ -18,7 +18,7 @@ server.get('/api/users', (req, res) => {
   Users.find()
     .then(users => {
       res.status(200).json(users);
-      console.log('res in hubs GET request: ', res)
+      // console.log('res in hubs GET request: ', res)
     })
     .catch(error => {
       // console.log(error);
@@ -32,8 +32,11 @@ server.get('/api/users/:id', (req, res) => {
 
   Users.findById(id)
     .then(user => {
-      res.status(200).json(user);
-      console.log(`findByID ${id} worked!`)
+      if(user) {
+        res.status(200).json(user)
+      } else {
+        res.status(404).json({ message: "The user with the specified ID does not exist." })
+      }
     })
     .catch(error => {
       // console.log(error);
@@ -51,7 +54,7 @@ server.post('/api/users', (req, res) => {
   } else {
     Users.insert(userData)
     .then(user => {
-      res.status(201).json(user)
+      res.status(201).json(userData)
     })
     .catch(error => {
       // console.log(error);
